@@ -46,5 +46,10 @@ module.exports = {
   ADMIN_SETUP_KEY: process.env.ADMIN_SETUP_KEY,
   
   // Upload
-  UPLOAD_DIR: process.env.UPLOAD_DIR || './uploads'
+  UPLOAD_DIR: process.env.UPLOAD_DIR || './uploads',
+  
+  // Cloudinary
+  CLOUDINARY_CLOUD_NAME: process.env.CLOUDINARY_CLOUD_NAME,
+  CLOUDINARY_API_KEY: process.env.CLOUDINARY_API_KEY,
+  CLOUDINARY_API_SECRET: process.env.CLOUDINARY_API_SECRET
 };

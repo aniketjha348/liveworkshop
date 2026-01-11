@@ -393,7 +393,6 @@ const AdminWorkshopDetail = () => {
                       );
                     })
                   )}
-                </div>
               </div>
             </div>
           )}
