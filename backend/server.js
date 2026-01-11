@@ -40,6 +40,13 @@ const compression = require('compression');
 const corsOrigins = process.env.CORS_ORIGINS
   ? process.env.CORS_ORIGINS.split(',').map(origin => origin.trim())
   : [];
+
+console.log('🔒 CORS Config:', {
+  origins: corsOrigins,
+  envValue: process.env.CORS_ORIGINS,
+  trustProxy: app.get('trust proxy')
+});
+
 app.use(cors({
   origin: corsOrigins,
   credentials: true
