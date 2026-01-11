@@ -22,6 +22,9 @@ const { startScheduler } = require('./src/services/scheduler.service');
 const app = express();
 const PORT = process.env.PORT || 8000;
 
+// Trust proxy (required for Render/Heroku/Vercel)
+app.set('trust proxy', 1);
+
 // CORS Configuration
 // Security & Utilities
 const helmet = require('helmet');
