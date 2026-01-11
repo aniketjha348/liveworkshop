@@ -34,7 +34,9 @@ const compression = require('compression');
 // ... existing imports ...
 
 // CORS Configuration
-const corsOrigins = process.env.CORS_ORIGINS?.split(',') || ['http://localhost:3000', 'http://localhost:5000'];
+const corsOrigins = process.env.CORS_ORIGINS
+  ? process.env.CORS_ORIGINS.split(',').map(origin => origin.trim())
+  : ['http://localhost:3000', 'http://localhost:5000'];
 app.use(cors({
   origin: corsOrigins,
   credentials: true
