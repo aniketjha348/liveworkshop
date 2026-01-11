@@ -17,19 +17,20 @@ import { toast } from 'sonner';
 import { ROUTES, getWorkshopRoute } from '@/constants';
 
 const MyWorkshops = () => {
-  const { user } = useAuth();
+  const { user, loading: authLoading } = useAuth();
   const navigate = useNavigate();
   const [workshops, setWorkshops] = useState([]);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState('upcoming');
 
   useEffect(() => {
+    if (authLoading) return;
     if (!user) {
       navigate(ROUTES.LOGIN);
       return;
     }
     fetchMyWorkshops();
-  }, [user, navigate]);
+  }, [user, authLoading, navigate]);
 
   const fetchMyWorkshops = async () => {
     try {

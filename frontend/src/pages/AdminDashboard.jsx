@@ -11,7 +11,7 @@ import { toast } from "sonner";
 import { ROUTES } from "@/constants";
 
 const AdminDashboard = () => {
-  const { user } = useAuth();
+  const { user, loading: authLoading } = useAuth();
   const navigate = useNavigate();
   const [workshops, setWorkshops] = useState([]);
   const [stats, setStats] = useState({
@@ -23,12 +23,13 @@ const AdminDashboard = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    if (authLoading) return;
     if (!user || user.role !== "admin") {
       navigate("/");
       return;
     }
     fetchData();
-  }, [user, navigate]);
+  }, [user, authLoading, navigate]);
 
   const fetchData = async () => {
     try {
