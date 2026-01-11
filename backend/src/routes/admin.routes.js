@@ -323,7 +323,10 @@ router.put('/settings', async (req, res) => {
     }
     if (email_subject_template) settings.email_subject_template = email_subject_template;
     if (sender_name) settings.sender_name = sender_name;
+    if (sender_name) settings.sender_name = sender_name;
     if (sender_email) settings.sender_email = sender_email;
+    if (req.body.send_confirmation !== undefined) settings.send_confirmation = req.body.send_confirmation;
+    if (req.body.send_reminders !== undefined) settings.send_reminders = req.body.send_reminders;
     
     await settings.save();
     res.json(settings.toJSON());

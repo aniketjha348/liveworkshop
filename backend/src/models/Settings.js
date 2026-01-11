@@ -29,6 +29,14 @@ const settingsSchema = new mongoose.Schema({
   sender_email: {
     type: String,
     default: ''
+  },
+  send_confirmation: {
+    type: Boolean,
+    default: true
+  },
+  send_reminders: {
+    type: Boolean,
+    default: true
   }
 }, {
   collection: 'settings',

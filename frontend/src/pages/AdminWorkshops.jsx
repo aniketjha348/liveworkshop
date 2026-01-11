@@ -195,7 +195,7 @@ const AdminWorkshops = () => {
                 <th className="px-6 py-4 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">Workshop</th>
                 <th className="px-6 py-4 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">Date & Time</th>
                 <th className="px-6 py-4 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">Price</th>
-                <th className="px-6 py-4 text-right text-xs font-semibold text-slate-500 uppercase tracking-wider">Actions</th>
+                <th className="px-6 py-4 text-right text-xs font-semibold text-slate-500 uppercase tracking-wider"></th>
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-100">
@@ -203,8 +203,21 @@ const AdminWorkshops = () => {
                  <tr><td colSpan={4} className="p-8 text-center text-slate-500">Loading...</td></tr>
               ) : filteredWorkshops.length === 0 ? (
                 <tr>
-                  <td colSpan={4} className="px-6 py-12 text-center text-slate-500">
-                    {searchTerm ? "No matching workshops found" : "No workshops created yet"}
+                  <td colSpan={4} className="px-6 py-16 text-center">
+                    <div className="flex flex-col items-center">
+                       <div className="bg-slate-50 p-4 rounded-full mb-3">
+                         <Calendar className="w-8 h-8 text-slate-400" />
+                       </div>
+                       <h3 className="text-lg font-medium text-slate-900">No workshops found</h3>
+                       <p className="text-slate-500 mt-1 max-w-sm">
+                         {searchTerm ? "Try adjusting your search terms" : "Get started by creating your first workshop!"}
+                       </p>
+                       {!searchTerm && (
+                         <Button onClick={() => { resetForm(); setDialogOpen(true); }} className="mt-4">
+                           <Plus className="w-4 h-4 mr-2" /> Create Workshop
+                         </Button>
+                       )}
+                    </div>
                   </td>
                 </tr>
               ) : (
@@ -301,7 +314,7 @@ const AdminWorkshops = () => {
                   </div>
                 ) : (
                   <label htmlFor="thumbnail-upload" className="flex flex-col items-center justify-center w-full h-48 border-2 border-dashed rounded-lg cursor-pointer bg-slate-50 hover:bg-slate-100">
-                    <div className="flex flex-col items-center justify-center pt-5 pb-6">
+                <div className="flex flex-col items-center justify-center pt-5 pb-6">
                       {uploading ? <div className="animate-pulse text-slate-500">Uploading...</div> : (
                         <>
                           <Image className="w-10 h-10 mb-3 text-slate-400" />
