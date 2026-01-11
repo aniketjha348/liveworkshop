@@ -196,36 +196,83 @@ const AdminSettings = () => {
                   {settings.send_reminders && (
                     <>
                       <div className="flex flex-wrap gap-2 mt-3">
-                        {(settings.reminder_hours || []).map((hour) => (
-                          <div
-                            key={hour}
-                            className="flex items-center gap-2 bg-blue-100 text-blue-700 px-3 py-2 rounded-lg text-sm font-medium"
-                          >
-                            <Clock className="w-4 h-4" />
-                            <span>
-                              {hour} {hour === 1 ? "hour" : "hours"} before
-                            </span>
-                            <button
-                              onClick={() => removeReminderHour(hour)}
-                              className="ml-1 text-blue-500 hover:text-blue-700 hover:bg-blue-200 rounded p-0.5"
+                        {(settings.reminder_hours || []).map((hour) => {
+                          const isMinutes = hour < 1;
+                          const displayValue = isMinutes ? Math.round(hour * 60) : hour;
+                          const unit = isMinutes ? "minutes" : (displayValue === 1 ? "hour" : "hours");
+                          
+                          return (
+                            <div
+                              key={hour}
+                              className="flex items-center gap-2 bg-blue-100 text-blue-700 px-3 py-2 rounded-lg text-sm font-medium"
                             >
-                              <X className="w-4 h-4" />
-                            </button>
-                          </div>
-                        ))}
+                              <Clock className="w-4 h-4" />
+                              <span>
+                                {displayValue} {unit} before
+                              </span>
+                              <button
+                                onClick={() => removeReminderHour(hour)}
+                                className="ml-1 text-blue-500 hover:text-blue-700 hover:bg-blue-200 rounded p-0.5"
+                              >
+                                <X className="w-4 h-4" />
+                              </button>
+                            </div>
+                          );
+                        })}
                       </div>
 
-                      <div className="flex gap-2 mt-4">
-                        <Input
-                          type="number"
-                          placeholder="Hours before workshop"
-                          value={newReminderHour}
-                          onChange={(e) => setNewReminderHour(e.target.value)}
-                          className="w-52"
-                        />
-                        <Button variant="outline" onClick={addReminderHour}>
+                      <div className="flex gap-2 mt-4 items-end">
+                        <div className="w-32">
+                          <Input
+                            type="number"
+                            placeholder="Value"
+                            value={newReminderHour}
+                            onChange={(e) => setNewReminderHour(e.target.value)}
+                            min="0"
+                            step="any"
+                          />
+                        </div>
+                        <div className="w-32">
+                           <select 
+                             className="flex h-10 w-full rounded-md border border-slate-200 bg-white px-3 py-2 text-sm ring-offset-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                             id="unit-selector"
+                             defaultValue="hours"
+                           >
+                              <option value="hours">Hours</option>
+                              <option value="minutes">Minutes</option>
+                           </select>
+                        </div>
+                        <Button variant="outline" onClick={() => {
+                           const unit = document.getElementById('unit-selector').value;
+                           const val = parseFloat(newReminderHour);
+                           if (isNaN(val) || val <= 0) {
+                             toast.error("Invalid number");
+                             return;
+                           }
+                           
+                           // Convert to hours
+                           let hourValue = val;
+                           if (unit === 'minutes') {
+                             hourValue = val / 60;
+                           }
+                           
+                           // Round to reasonable precision to avoid 0.25000001
+                           hourValue = parseFloat(hourValue.toFixed(4));
+
+                           const currentHours = settings.reminder_hours || [];
+                           if (currentHours.includes(hourValue)) {
+                             toast.error("Reminder already exists");
+                             return;
+                           }
+                           
+                           setSettings({
+                             ...settings,
+                             reminder_hours: [...currentHours, hourValue].sort((a, b) => b - a),
+                           });
+                           setNewReminderHour("");
+                        }}>
                           <Plus className="w-4 h-4 mr-2" />
-                          Add Reminder
+                          Add
                         </Button>
                       </div>
                     </>
