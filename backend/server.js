@@ -38,7 +38,7 @@ const compression = require('compression');
 
 // CORS Configuration
 const corsOrigins = process.env.CORS_ORIGINS
-  ? process.env.CORS_ORIGINS.split(',').map(origin => origin.trim())
+  ? process.env.CORS_ORIGINS.split(',').map(origin => origin.trim().replace(/\/$/, ''))
   : [];
 
 console.log('🔒 CORS Config:', {
