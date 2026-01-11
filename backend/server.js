@@ -53,7 +53,10 @@ app.use(cors({
 }));
 
 // Set security headers
-app.use(helmet());
+// Set security headers
+app.use(helmet({
+  crossOriginResourcePolicy: { policy: "cross-origin" }
+}));
 
 // Prevent XSS attacks
 app.use(xss());
